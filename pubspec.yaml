@@ -1,5 +1,5 @@
 name: crafting_helper
-description: A new Flutter project.
+description: A simple material tracking tool for crafting games.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
