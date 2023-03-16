@@ -24,7 +24,6 @@ class _MaterialEntryState extends State<MaterialEntry> {
   @override
   void initState() {
     super.initState();
-    print("initState");
   }
 
   void _incrementQuantity() {

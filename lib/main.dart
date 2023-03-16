@@ -33,11 +33,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Map<String, dynamic>> materials = [];
+  final TextEditingController _textFieldController = TextEditingController();
+
+  late String tempNewMaterialName;
 
   void _addMaterial(
       String materialName, int materialQuantity, bool isCollected) {
     setState(() {
-      print("adding material");
       materials.add({
         'materialName': materialName,
         'materialQuantity': materialQuantity,
@@ -50,6 +52,45 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       materials.removeAt(index);
     });
+  }
+
+  Future<void> _displayMaterialNameEntryDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('New material name'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  tempNewMaterialName = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: const InputDecoration(
+                  hintText: "e.g. Iron Bars, Skulls, etc"),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              TextButton(
+                child: const Text('Add new material'),
+                onPressed: () {
+                  setState(() {
+                    _addMaterial(tempNewMaterialName, 0, false);
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -66,7 +107,6 @@ class _MyHomePageState extends State<MyHomePage> {
               materialName: materials[index]['materialName'],
               materialQuantity: materials[index]['materialQuantity'],
               isCollected: materials[index]['isCollected'],
-              //key: materials[index].key,
               itemIndex: index,
               onDelete: (index) => _removeMaterial(index),
             );
@@ -75,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _addMaterial("TESTMATERIALNAME", 0, false),
+        onPressed: () => _displayMaterialNameEntryDialog(context),
         tooltip: 'Add new material',
         child: const Icon(Icons.add),
       ),
